@@ -69,6 +69,8 @@ class MoviesSection extends Component {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         toast.error(ex.response.data.message);
+      } else if (ex.response && ex.response.status === 401) {
+        toast.error("please first login to your account");
       }
 
       movies[index].like = !movies[index].like;

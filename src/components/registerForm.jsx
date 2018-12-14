@@ -7,7 +7,7 @@ import Form from './common/form';
 
 class RegisterForm extends Form {
   state = {
-    data: { email: '', password: '', username: '' },
+    data: { email: '', password: '', username: '', is_admin: false },
     errors: {}
   }
 
