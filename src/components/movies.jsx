@@ -17,19 +17,21 @@ class Movies extends Component {
     },
     { path: 'genre.name', label: 'Genre' },
     { path: 'number_in_stock', label: 'Stock' },
-    { path: 'daily_rental_rate', label: 'Rate' },
-    {
-      path: 'like',
-      label: 'Like',
-      content: movie => (<Like
-        onLike={() => this.props.onLike(movie)}
-        movie={movie}
-      />)
-    }
+    { path: 'daily_rental_rate', label: 'Rate' }
   ];
+
+  likeColumn = {
+    path: 'like',
+    label: 'Like',
+    content: movie => (<Like
+      onLike={() => this.props.onLike(movie)}
+      movie={movie}
+    />)
+  };
 
   deleteColumn = {
     path: 'onDelete',
+    label: 'Manage',
     content: movie => (
       auth.getCurrentUser() &&
       <button className="btn btn-danger btn-md"
@@ -38,13 +40,16 @@ class Movies extends Component {
     )
   };
 
-  
+
   constructor() {
     super();
     const user = auth.getCurrentUser();
-    if (user) this.columns.push(this.deleteColumn);
+    if (user) {
+      this.columns.push(this.likeColumn);
+      this.columns.push(this.deleteColumn);
+    }
   }
-  
+
   getMovieTitle = movie => {
     if (auth.getCurrentUser()) {
       return (
@@ -54,7 +59,7 @@ class Movies extends Component {
 
     return movie.title;
   };
-  
+
   renderFilters = () => {
     const {
       currentPage,

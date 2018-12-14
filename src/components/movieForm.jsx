@@ -13,7 +13,6 @@ class MovieForm extends Form {
       genre_id: 0,
       number_in_stock: 0,
       daily_rental_rate: 0,
-      like: false
     },
     genres: [],
     errors: {}
@@ -24,7 +23,6 @@ class MovieForm extends Form {
     title: Joi.string().required().label('Title'),
     genre_id: Joi.number().invalid([0, 'please select one option']).required().label('Genre'),
     number_in_stock: Joi.number().min(1).max(100).label('Number in Stock'),
-    like: Joi.boolean().allow().optional(),
     daily_rental_rate: Joi.number().min(1).max(10).label('Rate')
   }
 
@@ -66,6 +64,8 @@ class MovieForm extends Form {
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         toast.error(ex.response.data.message);
+      } else if (ex.response && ex.response.status === 500) {
+        console.log(ex.response);
       }
     }
   }

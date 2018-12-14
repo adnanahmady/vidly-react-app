@@ -22,11 +22,10 @@ export async function saveMovie(data) {
   }
 }
 
-export async function setLike(id, like) {
+export async function setLike(id) {
   return await api.patch(
     `${apiEndpoint}/${id}/like`, {
-      id: id,
-      like: like
+      id: id
     }
   );
 }

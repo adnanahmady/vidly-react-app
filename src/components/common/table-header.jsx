@@ -32,6 +32,7 @@ class TableHeader extends Component {
           {
             columns.map((column, index) =>
               <th
+                className="text-center"
                 style={this.pointer}
                 scope="col"
                 key={index}

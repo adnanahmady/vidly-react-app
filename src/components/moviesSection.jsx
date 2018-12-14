@@ -28,15 +28,15 @@ class MoviesSection extends Component {
       itemsInPage,
       currentPage,
       movies: allMovies } = this.state;
-      const movies = allMovies.filter(movie => movie.id !== id);
-      let { moviesItemsCount } = this.state;
-      moviesItemsCount = (moviesItemsCount > 0)
-        ? moviesItemsCount - 1 : movies.length;
-      this.setState({ movies, moviesItemsCount });  
+    const movies = allMovies.filter(movie => movie.id !== id);
+    let { moviesItemsCount } = this.state;
+    moviesItemsCount = (moviesItemsCount > 0)
+      ? moviesItemsCount - 1 : movies.length;
+    this.setState({ movies, moviesItemsCount });
 
     try {
       const user = auth.getCurrentUser();
-      if (! user || user.is_admin !== true) throw new Error('only admin can delete movies');
+      if (!user || user.is_admin !== true) throw new Error('only admin can delete movies');
       const { data } = await deleteMovie(id);
       toast.success(data.message);
     } catch (ex) {
@@ -57,24 +57,30 @@ class MoviesSection extends Component {
   }
 
   handleLike = async movie => {
+    if (!auth.getCurrentUser()) {
+      toast.error("please first login to your account");
+      return;
+    }
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
     movies[index] = { ...movie };
-    movies[index].like = !movies[index].like;
-    this.setState({ movies });
 
     try {
-      const { data } = await setLike(movies[index].id, movies[index].like);
+      const { data } = await setLike(movies[index].id);
       toast.success(data.message);
+      if (data.like === true) {
+        movies[index].like++;
+        this.setState({ movies });
+      } else if (data.like === false) {
+        movies[index].like--;
+        this.setState({ movies });
+      }
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         toast.error(ex.response.data.message);
       } else if (ex.response && ex.response.status === 401) {
         toast.error("please first login to your account");
       }
-
-      movies[index].like = !movies[index].like;
-      this.setState({ movies });
     }
   }
 

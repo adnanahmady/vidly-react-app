@@ -14,7 +14,8 @@ class RegisterForm extends Form {
   schema = {
     email: Joi.string().required().email().label('Email'),
     password: Joi.string().required().min(5).label('Password'),
-    username: Joi.string().required().label('Username')
+    username: Joi.string().required().label('Username'),
+    is_admin: Joi.boolean().allow(false)
   };
 
   doSubmit = async () => {
