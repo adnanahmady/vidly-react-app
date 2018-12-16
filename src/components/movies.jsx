@@ -39,7 +39,6 @@ class Movies extends Component {
     )
   };
 
-
   constructor() {
     super();
     const user = auth.getCurrentUser();
@@ -114,14 +113,6 @@ class Movies extends Component {
     } = this.props;
 
     const { movies } = this.renderFilters();
-
-    if (moviesItemsCount === 0)
-      return (
-        <React.Fragment>
-          <p className="my-2">there is no movies in the database.</p>
-          {this.tablesManage()}
-        </React.Fragment>
-      );
 
     return (
       <React.Fragment>

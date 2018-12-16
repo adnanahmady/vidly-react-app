@@ -6,6 +6,8 @@ import { getMovies, setLike, deleteMovie } from '../services/movieService';
 import search from '../utils/search';
 import { toast } from 'react-toastify';
 import auth from './../services/authService';
+import Loading from 'react-loading-bar';
+import 'react-loading-bar/dist/index.css';
 
 class MoviesSection extends Component {
   state = {
@@ -15,12 +17,14 @@ class MoviesSection extends Component {
     sortColumn: { path: 'title', order: 'asc' },
     currentPage: 1,
     itemsInPage: 4,
-    search: ''
+    search: '',
+    loadingBarShow: false
   }
 
   async componentDidMount() {
+    this.setState({ loadingBarShow: true });
     const { data: movies } = await getMovies();
-    this.setState({ movies, moviesItemsCount: movies.length });
+    this.setState({ movies, moviesItemsCount: movies.length, loadingBarShow: false });
   }
 
   handleDelete = async id => {
@@ -119,6 +123,10 @@ class MoviesSection extends Component {
 
     return (
       <React.Fragment>
+        <Loading
+          show={this.state.loadingBarShow}
+          color="yellow"
+        />
         <div className="row">
           <section className="col-3">
             <SideBar
