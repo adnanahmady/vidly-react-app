@@ -17,17 +17,16 @@ class Movies extends Component {
     },
     { path: 'genre.name', label: 'Genre' },
     { path: 'number_in_stock', label: 'Stock' },
-    { path: 'daily_rental_rate', label: 'Rate' }
+    { path: 'daily_rental_rate', label: 'Rate' },
+    {
+      path: 'like',
+      label: 'Like',
+      content: movie => (<Like
+        onLike={() => this.props.onLike(movie)}
+        movie={movie}
+      />)
+    }
   ];
-
-  likeColumn = {
-    path: 'like',
-    label: 'Like',
-    content: movie => (<Like
-      onLike={() => this.props.onLike(movie)}
-      movie={movie}
-    />)
-  };
 
   deleteColumn = {
     path: 'onDelete',
@@ -45,7 +44,6 @@ class Movies extends Component {
     super();
     const user = auth.getCurrentUser();
     if (user) {
-      this.columns.push(this.likeColumn);
       this.columns.push(this.deleteColumn);
     }
   }
